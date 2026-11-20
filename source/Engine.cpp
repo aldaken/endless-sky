@@ -2550,7 +2550,7 @@ void Engine::FindCollisions(Projectile &projectile, map<Entity *, vector<EntityC
 		CollisionType collisionType = collision.GetCollisionType();
 		double range = collision.IntersectionRange();
 		bool targetedHit = (hit == projectile.Target());
-		bool alliedGov = hit && !gov->IsEnemy(hit->GetGovernment());
+		bool alliedGov = hit && gov && !gov->IsEnemy(hit->GetGovernment());
 		bool isSafe = weapon.IsSafe();
 
 		shared_ptr<Ship> shipHit;
@@ -2598,7 +2598,7 @@ void Engine::FindCollisions(Projectile &projectile, map<Entity *, vector<EntityC
 				Projectile::ImpactInfo useImpact = impact;
 				// A non-targeted direct hit on a friendly government can only occur if friendly fire is active.
 				// Scale the impact damage by the friendly fire damage multiplier.
-				if(!gov->IsEnemy(ship->GetGovernment()) && !targeted && directHit)
+				if(gov && !gov->IsEnemy(ship->GetGovernment()) && !targeted && directHit)
 					useImpact.scaling *= GameData::GetGamerules().FriendlyFireDamageMultiplier();
 
 				// Only directly targeted ships get provoked by blast weapons.
